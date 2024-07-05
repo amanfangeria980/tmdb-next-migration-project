@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useCredentials } from "@/context/UserContext";
+import { useCredentials } from "../../context/UserContext";
 
 const SignupForm = () => {
     const [username, setUsername] = useState("");
