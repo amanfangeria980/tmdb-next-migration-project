@@ -8,17 +8,16 @@ import { useRouter } from "next/navigation";
 const Profile = () => {
     const { user, emailId, isLoggedIn } = useCredentials();
     const router = useRouter();
-
     useEffect(() => {
+        let timeout;
         if (!isLoggedIn) {
-            alert("Please login to access this page.");
             router.push("/");
+            timeout = setTimeout(() => {
+                alert("Please sign in to access profile");
+            }, 100);
         }
-    }, [isLoggedIn, router]);
-
-    if (!isLoggedIn) {
-        return null; // Return null to prevent rendering the component while redirecting
-    }
+        return () => clearTimeout(timeout);
+    }, []);
 
     return (
         <div className="flex flex-col justify-center items-center mt-5 gap-10">

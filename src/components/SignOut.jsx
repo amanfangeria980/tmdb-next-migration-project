@@ -6,10 +6,10 @@ const SignOut = () => {
     const router = useRouter();
     const { setUser, setEmailId } = useCredentials();
     const handleSignOut = () => {
+        router.replace("/");
+        alert("You have been signed out.");
         setUser(null);
         setEmailId(null);
-        alert("You have been signed out.");
-        router.push("/");
         // window.location.reload();
     };
 
