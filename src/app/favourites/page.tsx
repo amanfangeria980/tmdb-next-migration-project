@@ -1,23 +1,41 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MovieCard from "../../components/MovieCard";
 import { FaHeart } from "react-icons/fa";
 import { TiDeleteOutline } from "react-icons/ti";
 
 const Favourites = () => {
-    const [favorites, setFavorites] = useState(
-        (typeof window !== "undefined" &&
-            JSON.parse(localStorage.getItem("favorites"))) ||
-            []
-    );
+    const [favorites, setFavorites] = useState([]);
+
+    useEffect(() => {
+        const storedFavorites = localStorage.getItem("favorites");
+        if (storedFavorites) {
+            setFavorites(JSON.parse(storedFavorites));
+        }
+    }, []);
+
+    const saveFavoritesToLocalStorage = (updatedFavorites) => {
+        try {
+            if (typeof window !== "undefined") {
+                localStorage.setItem(
+                    "favorites",
+                    JSON.stringify(updatedFavorites)
+                );
+            }
+        } catch (error) {
+            console.error(
+                "Error while setting favorites in localStorage:",
+                error
+            );
+        }
+    };
 
     const removeFromFavorites = (id) => {
         const updatedFavorites = favorites.filter(
             (favorite) => favorite.id !== id
         );
         setFavorites(updatedFavorites);
-        if (typeof window !== "undefined")
-            localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+        saveFavoritesToLocalStorage(updatedFavorites);
     };
 
     return (

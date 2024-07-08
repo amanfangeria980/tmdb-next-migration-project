@@ -1,23 +1,41 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MovieCard from "../../components/MovieCard";
 import { FaBookmark } from "react-icons/fa";
 import { TiDeleteOutline } from "react-icons/ti";
 
 const WatchList = () => {
-    const [bookmarks, setBookmarks] = useState(
-        JSON.parse(
-            typeof window !== "undefined" && localStorage.getItem("bookmarks")
-        ) || []
-    );
+    const [bookmarks, setBookmarks] = useState([]);
+
+    useEffect(() => {
+        const storedBookmarks = localStorage.getItem("bookmarks");
+        if (storedBookmarks) {
+            setBookmarks(JSON.parse(storedBookmarks));
+        }
+    }, []);
+
+    const saveBookmarksToLocalStorage = (updatedBookmarks) => {
+        try {
+            if (typeof window !== "undefined") {
+                localStorage.setItem(
+                    "bookmarks",
+                    JSON.stringify(updatedBookmarks)
+                );
+            }
+        } catch (error) {
+            console.error(
+                "Error while setting bookmarks in localStorage:",
+                error
+            );
+        }
+    };
 
     const removeFromWatchList = (id) => {
         const updatedBookmarks = bookmarks.filter(
             (bookmark) => bookmark.id !== id
         );
         setBookmarks(updatedBookmarks);
-        if (typeof window !== "undefined")
-            localStorage.setItem("bookmarks", JSON.stringify(updatedBookmarks));
+        saveBookmarksToLocalStorage(updatedBookmarks);
     };
 
     return (
