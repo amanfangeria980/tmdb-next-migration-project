@@ -14,8 +14,16 @@ const ShowCard = ({ obj }) => {
     const router = useRouter();
 
     useEffect(() => {
-        const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
-        const bookmarks = JSON.parse(localStorage.getItem("bookmarks")) || [];
+        const favorites =
+            JSON.parse(
+                typeof window !== "undefined" &&
+                    localStorage.getItem("favorites")
+            ) || [];
+        const bookmarks =
+            JSON.parse(
+                typeof window !== "undefined" &&
+                    localStorage.getItem("bookmarks")
+            ) || [];
         setIsFavorite(favorites.some((item) => item.id === obj.id));
         setIsBookmarked(bookmarks.some((item) => item.id === obj.id));
     }, [obj]);
@@ -28,11 +36,18 @@ const ShowCard = ({ obj }) => {
         }
 
         setIsFavorite(!isFavorite);
-        const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+        const favorites =
+            JSON.parse(
+                typeof window !== "undefined" &&
+                    localStorage.getItem("favorites")
+            ) || [];
         const updatedFavorites = isFavorite
             ? favorites.filter((item) => item.id !== obj.id)
             : [...favorites, obj];
-        localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+        localStorage.setItem(
+            "favorites",
+            typeof window !== "undefined" && JSON.stringify(updatedFavorites)
+        );
     };
 
     const toggleBookmark = () => {
@@ -43,11 +58,16 @@ const ShowCard = ({ obj }) => {
         }
 
         setIsBookmarked(!isBookmarked);
-        const bookmarks = JSON.parse(localStorage.getItem("bookmarks")) || [];
+        const bookmarks =
+            JSON.parse(
+                typeof window !== "undefined" &&
+                    localStorage.getItem("bookmarks")
+            ) || [];
         const updatedBookmarks = isBookmarked
             ? bookmarks.filter((item) => item.id !== obj.id)
             : [...bookmarks, obj];
-        localStorage.setItem("bookmarks", JSON.stringify(updatedBookmarks));
+        if (typeof window !== "undefined")
+            localStorage.setItem("bookmarks", JSON.stringify(updatedBookmarks));
     };
 
     const imageUrl = `https://media.themoviedb.org/t/p/original${obj.poster_path}`;

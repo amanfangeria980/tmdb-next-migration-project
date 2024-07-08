@@ -6,7 +6,9 @@ import { TiDeleteOutline } from "react-icons/ti";
 
 const Favourites = () => {
     const [favorites, setFavorites] = useState(
-        JSON.parse(localStorage.getItem("favorites")) || []
+        (typeof window !== "undefined" &&
+            JSON.parse(localStorage.getItem("favorites"))) ||
+            []
     );
 
     const removeFromFavorites = (id) => {
@@ -14,7 +16,8 @@ const Favourites = () => {
             (favorite) => favorite.id !== id
         );
         setFavorites(updatedFavorites);
-        localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
+        if (typeof window !== "undefined")
+            localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
     };
 
     return (

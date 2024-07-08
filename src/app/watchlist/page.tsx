@@ -6,7 +6,9 @@ import { TiDeleteOutline } from "react-icons/ti";
 
 const WatchList = () => {
     const [bookmarks, setBookmarks] = useState(
-        JSON.parse(localStorage.getItem("bookmarks")) || []
+        JSON.parse(
+            typeof window !== "undefined" && localStorage.getItem("bookmarks")
+        ) || []
     );
 
     const removeFromWatchList = (id) => {
@@ -14,7 +16,8 @@ const WatchList = () => {
             (bookmark) => bookmark.id !== id
         );
         setBookmarks(updatedBookmarks);
-        localStorage.setItem("bookmarks", JSON.stringify(updatedBookmarks));
+        if (typeof window !== "undefined")
+            localStorage.setItem("bookmarks", JSON.stringify(updatedBookmarks));
     };
 
     return (

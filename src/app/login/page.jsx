@@ -11,7 +11,9 @@ const LoginForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        const storedUserData = localStorage.getItem("user");
+        const storedUserData =
+            (typeof window !== "undefined" && localStorage.getItem("user")) ||
+            null;
         if (storedUserData) {
             const parsedUserData = JSON.parse(storedUserData);
             if (parsedUserData.password === password) {

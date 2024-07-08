@@ -15,7 +15,9 @@ const SignupForm = () => {
         const userData = { username, email, password };
 
         // Check if user data is already present in localStorage
-        const storedUserData = localStorage.getItem("user");
+        const storedUserData =
+            (typeof window !== "undefined" && localStorage.getItem("user")) ||
+            null;
         if (storedUserData) {
             const parsedUserData = JSON.parse(storedUserData);
             if (parsedUserData.email === email) {
@@ -29,7 +31,8 @@ const SignupForm = () => {
         setIsLoggedIn(true);
 
         // Save user data to localStorage
-        localStorage.setItem("user", JSON.stringify(userData));
+        typeof window !== "undefined" &&
+            localStorage.setItem("user", JSON.stringify(userData));
         // You may want to redirect to another page after successful signup
         // navigate("/login");
         router.push("/");
